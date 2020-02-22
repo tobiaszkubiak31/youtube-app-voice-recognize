@@ -11,7 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -26,7 +29,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import app.com.youtubeapiv3.DetailsActivity;
+import app.com.youtubeapiv3.activites.DetailsActivity;
 import app.com.youtubeapiv3.R;
 import app.com.youtubeapiv3.adapters.VideoPostAdapter;
 import app.com.youtubeapiv3.interfaces.OnItemClickListener;
@@ -35,7 +38,7 @@ import app.com.youtubeapiv3.models.YoutubeDataModel;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChannelFragment extends Fragment {
+public class SearchFragment extends Fragment {
     private static String GOOGLE_YOUTUBE_API_KEY = "AIzaSyAdDix7i7a3an-gyXiquTV_14cIsr8-DZg";//here you should use your api key for testing purpose you can use this api also
     private static String CHANNEL_ID = "UCoMdktPbSTixAyNGwb-UYkQ"; //here you should use your channel id for testing purpose you can use this api also
     private static String CHANNLE_GET_URL = "https://www.googleapis.com/youtube/v3/search?part=snippet&order=date&channelId=" + CHANNEL_ID + "&maxResults=20&key=" + GOOGLE_YOUTUBE_API_KEY + "";
@@ -45,7 +48,12 @@ public class ChannelFragment extends Fragment {
     private VideoPostAdapter adapter = null;
     private ArrayList<YoutubeDataModel> mListData = new ArrayList<>();
 
-    public ChannelFragment() {
+    private ImageView searchButton = null;
+    private TextView searchTextView = null;
+
+
+    private static String SEARCH_URL = "https://www.googleapis.com/youtube/v3/search?part=snippet&order=date&q=" + "keyword" + "&maxResults=20&key=" + GOOGLE_YOUTUBE_API_KEY + "";
+    public SearchFragment() {
         // Required empty public constructor
     }
 
@@ -54,10 +62,15 @@ public class ChannelFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_channel, container, false);
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
         mList_videos = (RecyclerView) view.findViewById(R.id.mList_videos);
         initList(mListData);
-        new RequestYoutubeAPI().execute();
+        this.searchButton = (ImageView)view.findViewById(R.id.imageViewSearch);
+        this.searchTextView = (TextView)view.findViewById(R.id.searchView);
+        new RequestYoutubeAPI().execute("https://www.googleapis.com/youtube/v3/search?part=snippet&order=date&q=" + "trends" + "&maxResults=25&key=" + SearchFragment.GOOGLE_YOUTUBE_API_KEY);
+
+        initSearchToolbar();
+
         return view;
     }
 
@@ -76,19 +89,35 @@ public class ChannelFragment extends Fragment {
 
     }
 
+    private void initSearchToolbar() {
+        this.searchButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View var1) {
+                String keywords = SearchFragment.this.searchTextView.getText().toString().replaceAll(" ", "%20");
+                (new RequestYoutubeAPI()).execute("https://www.googleapis.com/youtube/v3/search?part=snippet&order=date&q=" + keywords + "&maxResults=25&key=" + SearchFragment.GOOGLE_YOUTUBE_API_KEY);
+            }
+        });
+    }
+
+
+    public void search(String keywords) {
+        searchTextView.setText(keywords);
+        searchButton.performClick();
+
+    }
+
 
     //create an asynctask to get all the data from youtube
-    private class RequestYoutubeAPI extends AsyncTask<Void, String, String> {
+    private class RequestYoutubeAPI extends AsyncTask<String, String, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
 
         @Override
-        protected String doInBackground(Void... params) {
+        protected String doInBackground(String... params) {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpGet httpGet = new HttpGet(CHANNLE_GET_URL);
-            Log.e("URL", CHANNLE_GET_URL);
+            HttpGet httpGet = new HttpGet(params[0]);
+            Log.e("URL", params[0]);
             try {
                 HttpResponse response = httpClient.execute(httpGet);
                 HttpEntity httpEntity = response.getEntity();

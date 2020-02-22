@@ -1,23 +1,24 @@
-package app.com.youtubeapiv3.speechtotext.YoutubePlayerActivity;
+package app.com.youtubeapiv3.speechtotext.YoutubePlayerActivity.MainActivityService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import app.com.youtubeapiv3.acitivites.YoutubePlayerActivity;
-import app.com.youtubeapiv3.speechtotext.Command;
+import app.com.youtubeapiv3.activites.MainActivity;
+import app.com.youtubeapiv3.speechtotext.YoutubePlayerActivity.MainActivityService.Command;
+
 
 public class CommandService {
     private List<Command> commands;
 
 
 
-    YoutubePlayerActivity context ;
+    MainActivity context ;
 
 
-    public CommandService(YoutubePlayerActivity context)
+    public CommandService(MainActivity context)
     {
         this.context = context;
-        this.commands = new ArrayList<>();
+        this.commands = new ArrayList<Command>();
         this.commands.add(new Command("skończ", false));
         this.commands.add(new Command("stop", false));
         this.commands.add(new Command("zacznij", false));

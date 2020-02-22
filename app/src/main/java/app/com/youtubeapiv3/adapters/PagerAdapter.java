@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import app.com.youtubeapiv3.fragments.ChannelFragment;
+import app.com.youtubeapiv3.fragments.SearchFragment;
 import app.com.youtubeapiv3.fragments.LiveFragment;
 import app.com.youtubeapiv3.fragments.PlayListFragment;
 
@@ -19,20 +19,23 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
     }
+    SearchFragment searchFragment;
+    PlayListFragment playListFragment;
+    LiveFragment liveFragment;
 
     @Override
     public Fragment getItem(int position) {
 
         switch (position) {
             case 0:
-                ChannelFragment tab1 = new ChannelFragment();
-                return tab1;
+                searchFragment = new SearchFragment();
+                return searchFragment;
             case 1:
-                PlayListFragment tab2 = new PlayListFragment();
-                return tab2;
+                playListFragment = new PlayListFragment();
+                return playListFragment;
             case 2:
-                LiveFragment tab3 = new LiveFragment();
-                return tab3;
+                liveFragment = new LiveFragment();
+                return liveFragment;
             default:
                 return null;
         }
@@ -41,5 +44,21 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return mNumOfTabs;
+    }
+
+    public int getmNumOfTabs() {
+        return mNumOfTabs;
+    }
+
+    public SearchFragment getSearchFragment() {
+        return searchFragment;
+    }
+
+    public PlayListFragment getPlayListFragment() {
+        return playListFragment;
+    }
+
+    public LiveFragment getLiveFragment() {
+        return liveFragment;
     }
 }

@@ -1,8 +1,7 @@
-package app.com.youtubeapiv3;
+package app.com.youtubeapiv3.activites;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -28,7 +27,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.entity.StrictContentLengthStrategy;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,12 +36,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
+import app.com.youtubeapiv3.R;
 import app.com.youtubeapiv3.adapters.CommentAdapter;
 import app.com.youtubeapiv3.models.YoutubeCommentModel;
 import app.com.youtubeapiv3.models.YoutubeDataModel;
@@ -325,6 +323,15 @@ public class DetailsActivity extends YouTubeBaseActivity implements YouTubePlaye
                 pDialog.dismiss();
         }
     }
+
+    public void pauseVideo() {
+        this.mYoutubePlayer.pause();
+    }
+
+    public void startVideo() {
+        this.mYoutubePlayer.play();
+    }
+
 
 
     private class RequestYoutubeCommentAPI extends AsyncTask<Void, String, String> {

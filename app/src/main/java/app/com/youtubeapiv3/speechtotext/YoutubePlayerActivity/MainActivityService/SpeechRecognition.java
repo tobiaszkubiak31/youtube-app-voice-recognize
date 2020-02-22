@@ -1,4 +1,4 @@
-package app.com.youtubeapiv3.speechtotext.YoutubePlayerActivity;
+package app.com.youtubeapiv3.speechtotext.YoutubePlayerActivity.MainActivityService;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,35 +9,36 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import app.com.youtubeapiv3.acitivites.YoutubePlayerActivity;
-import app.com.youtubeapiv3.speechtotext.Commands;
+
+import app.com.youtubeapiv3.activites.MainActivity;
+
 
 //Singleton
 public class SpeechRecognition {
 
 	private static final String TAG = SpeechRecognition.class.getSimpleName();
-	private Commands commands;
 	private SpeechRecognizer speechRecognizer;
 	private SpeechRecognitionListener speechRecognitionListener;
 	private Intent recognizerIntent;
 	private AudioManager manager;
-	private YoutubePlayerActivity context;
+	private MainActivity context;
 	private CommandService commandService;
 
-	public SpeechRecognition(YoutubePlayerActivity context) {
+	public SpeechRecognition(MainActivity context) {
 	    this.context = context;
 
 		speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context);
 		speechRecognitionListener = new SpeechRecognitionListener();
 		manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 		speechRecognizer.setRecognitionListener(speechRecognitionListener);
-		//this.txvResult = (TextView) findViewById(R.id.txvResult);
-		this.commands = new Commands();
+
 		this.commandService = new CommandService(context);
+
+		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
 
 
 		startListening();
@@ -113,6 +114,8 @@ public class SpeechRecognition {
 		}
 		public void onError(int error)
 		{
+
+			System.out.println("ERROR " + error);
 			restart();
 		}
 		public void onResults(Bundle results)

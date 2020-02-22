@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -26,7 +25,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import app.com.youtubeapiv3.DetailsActivity;
+import app.com.youtubeapiv3.activites.DetailsActivity;
 import app.com.youtubeapiv3.R;
 import app.com.youtubeapiv3.adapters.VideoPostAdapter;
 import app.com.youtubeapiv3.interfaces.OnItemClickListener;
