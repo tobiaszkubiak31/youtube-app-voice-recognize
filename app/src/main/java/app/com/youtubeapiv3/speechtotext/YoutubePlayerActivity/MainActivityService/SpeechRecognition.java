@@ -121,14 +121,6 @@ public class SpeechRecognition {
 		public void onResults(Bundle results)
 		{
 			ArrayList<String> data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-//			for (int i = 0; i < data.size(); i++)
-//			{
-//				txvResult.append("results: " + data.get(i) + "\n");
-//				if(sentenceService(data.get(i)) == true)
-//				{
-//					break;
-//				}
-//			}
 
 			commandService.checkCommand(data);
 

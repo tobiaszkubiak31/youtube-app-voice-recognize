@@ -34,17 +34,20 @@ import app.com.youtubeapiv3.models.YoutubeDataModel;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PlayListFragment extends Fragment {
+public class PopularFragment extends Fragment {
 
     private static String GOOGLE_YOUTUBE_API_KEY = "AIzaSyAdDix7i7a3an-gyXiquTV_14cIsr8-DZg";//here you should use your api key for testing purpose you can use this api also
     private static String PLAYLIST_ID = "UU7V6hW6xqPAiUfataAZZtWA";//here you should use your playlist id for testing purpose you can use this api also
     private static String CHANNLE_GET_URL = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=" + PLAYLIST_ID + "&maxResults=20&key=" + GOOGLE_YOUTUBE_API_KEY + "";
 
+
+    private static String URL =  "https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=30&regionCode=PL&key="+ GOOGLE_YOUTUBE_API_KEY;
+
     private RecyclerView mList_videos = null;
     private VideoPostAdapter adapter = null;
     private ArrayList<YoutubeDataModel> mListData = new ArrayList<>();
 
-    public PlayListFragment() {
+    public PopularFragment() {
         // Required empty public constructor
     }
 
@@ -87,8 +90,8 @@ public class PlayListFragment extends Fragment {
         @Override
         protected String doInBackground(Void... params) {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpGet httpGet = new HttpGet(CHANNLE_GET_URL);
-            Log.e("URL", CHANNLE_GET_URL);
+            HttpGet httpGet = new HttpGet(URL);
+            Log.e("URL", URL);
             try {
                 HttpResponse response = httpClient.execute(httpGet);
                 HttpEntity httpEntity = response.getEntity();
@@ -126,16 +129,18 @@ public class PlayListFragment extends Fragment {
                 JSONArray jsonArray = jsonObject.getJSONArray("items");
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject json = jsonArray.getJSONObject(i);
+                    String vedio_id = json.getString("id");
                     if (json.has("kind")) {
-                        if (json.getString("kind").equals("youtube#playlistItem")) {
+                        if (json.getString("kind").equals("youtube#video")) {
                             YoutubeDataModel youtubeObject = new YoutubeDataModel();
                             JSONObject jsonSnippet = json.getJSONObject("snippet");
-                            String vedio_id = "";
-                            if (jsonSnippet.has("resourceId")) {
-                                JSONObject jsonResource = jsonSnippet.getJSONObject("resourceId");
-                                vedio_id = jsonResource.getString("videoId");
 
-                            }
+//                            if (jsonSnippet.has("resourceId")) {
+//                                JSONObject jsonResource = jsonSnippet.getJSONObject("resourceId");
+//                                vedio_id = jsonResource.getString("videoId");
+//
+//                            }
+
                             String title = jsonSnippet.getString("title");
                             String description = jsonSnippet.getString("description");
                             String publishedAt = jsonSnippet.getString("publishedAt");

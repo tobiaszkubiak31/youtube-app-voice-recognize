@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.test.mock.MockPackageManager;
 
 import app.com.youtubeapiv3.R;
 import app.com.youtubeapiv3.speechtotext.YoutubePlayerActivity.MainActivityService.SpeechRecognition;
@@ -18,7 +19,11 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager = null;
     private SpeechRecognition speechRecognition;
     private app.com.youtubeapiv3.adapters.PagerAdapter pagerAdapter;
+
     private final int MY_PERMISSIONS_RECORD_AUDIO = 1;
+    private static final int REQUEST_CODE_PERMISSION = 2;
+    String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -60,6 +65,33 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        askForRecordingPermissions();
+        askForLocationpermissions();
+
+        this.speechRecognition = new SpeechRecognition(this);
+
+
+
+
+    }
+
+    private void askForLocationpermissions() {
+        try {
+            if (ActivityCompat.checkSelfPermission(this, mPermission)
+                    != MockPackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this, new String[]{mPermission},
+                        REQUEST_CODE_PERMISSION);
+
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void askForRecordingPermissions() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
 
@@ -68,13 +100,8 @@ public class MainActivity extends AppCompatActivity {
                     MY_PERMISSIONS_RECORD_AUDIO);
 
         }
-
-        this.speechRecognition = new SpeechRecognition(this);
-
-
-
-
     }
+
 
     public void searchModeDetected(String var1) {
         this.viewPager.setCurrentItem(0);
@@ -83,12 +110,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     protected void onPause() {
-        this.speechRecognition.destroy();
+//        this.speechRecognition.destroy();
         super.onPause();
     }
 
     protected void onResume() {
-        this.speechRecognition = new SpeechRecognition(this);
+//        this.speechRecognition = new SpeechRecognition(this);
         super.onResume();
 
     }

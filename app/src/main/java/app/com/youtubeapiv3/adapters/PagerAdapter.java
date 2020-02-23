@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import app.com.youtubeapiv3.fragments.SearchFragment;
 import app.com.youtubeapiv3.fragments.LiveFragment;
-import app.com.youtubeapiv3.fragments.PlayListFragment;
+import app.com.youtubeapiv3.fragments.PopularFragment;
 
 /**
  * Created by mdmunirhossain on 12/18/17.
@@ -20,7 +20,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         this.mNumOfTabs = NumOfTabs;
     }
     SearchFragment searchFragment;
-    PlayListFragment playListFragment;
+    PopularFragment popularFragment;
     LiveFragment liveFragment;
 
     @Override
@@ -31,8 +31,8 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 searchFragment = new SearchFragment();
                 return searchFragment;
             case 1:
-                playListFragment = new PlayListFragment();
-                return playListFragment;
+                popularFragment = new PopularFragment();
+                return popularFragment;
             case 2:
                 liveFragment = new LiveFragment();
                 return liveFragment;
@@ -54,8 +54,8 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         return searchFragment;
     }
 
-    public PlayListFragment getPlayListFragment() {
-        return playListFragment;
+    public PopularFragment getPopularFragment() {
+        return popularFragment;
     }
 
     public LiveFragment getLiveFragment() {

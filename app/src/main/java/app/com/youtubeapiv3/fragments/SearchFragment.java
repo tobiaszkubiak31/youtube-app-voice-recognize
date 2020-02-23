@@ -31,7 +31,9 @@ import java.util.ArrayList;
 
 import app.com.youtubeapiv3.activites.DetailsActivity;
 import app.com.youtubeapiv3.R;
+import app.com.youtubeapiv3.activites.MainActivity;
 import app.com.youtubeapiv3.adapters.VideoPostAdapter;
+import app.com.youtubeapiv3.interfaces.GPSTracker;
 import app.com.youtubeapiv3.interfaces.OnItemClickListener;
 import app.com.youtubeapiv3.models.YoutubeDataModel;
 
@@ -44,6 +46,9 @@ public class SearchFragment extends Fragment {
     private static String CHANNLE_GET_URL = "https://www.googleapis.com/youtube/v3/search?part=snippet&order=date&channelId=" + CHANNEL_ID + "&maxResults=20&key=" + GOOGLE_YOUTUBE_API_KEY + "";
 
 
+    GPSTracker gps;
+    String className = this.getClass().getSimpleName();
+
     private RecyclerView mList_videos = null;
     private VideoPostAdapter adapter = null;
     private ArrayList<YoutubeDataModel> mListData = new ArrayList<>();
@@ -51,7 +56,7 @@ public class SearchFragment extends Fragment {
     private ImageView searchButton = null;
     private TextView searchTextView = null;
 
-
+    MainActivity context = ((MainActivity)getActivity());
     private static String SEARCH_URL = "https://www.googleapis.com/youtube/v3/search?part=snippet&order=date&q=" + "keyword" + "&maxResults=20&key=" + GOOGLE_YOUTUBE_API_KEY + "";
     public SearchFragment() {
         // Required empty public constructor
@@ -69,9 +74,35 @@ public class SearchFragment extends Fragment {
         this.searchTextView = (TextView)view.findViewById(R.id.searchView);
         new RequestYoutubeAPI().execute("https://www.googleapis.com/youtube/v3/search?part=snippet&order=date&q=" + "trends" + "&maxResults=25&key=" + SearchFragment.GOOGLE_YOUTUBE_API_KEY);
 
+        context = ((MainActivity)getActivity());
         initSearchToolbar();
 
+        // getCurrentLocation();
+
+
+
         return view;
+    }
+
+
+
+    private void getCurrentLocation() {
+        gps = new GPSTracker(context);
+
+        // check if GPS enabled
+        if(gps.canGetLocation()){
+
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+            System.out.println(latitude);
+            System.out.println(longitude);
+
+        }else{
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            Log.e(className,"Error with getting location");
+        }
     }
 
     private void initList(ArrayList<YoutubeDataModel> mListData) {
