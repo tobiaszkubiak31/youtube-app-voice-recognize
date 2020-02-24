@@ -1,6 +1,7 @@
 package app.com.youtubeapiv3.activites;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
@@ -9,6 +10,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.test.mock.MockPackageManager;
+import android.view.View;
+import android.widget.Button;
 
 import app.com.youtubeapiv3.R;
 import app.com.youtubeapiv3.speechtotext.YoutubePlayerActivity.MainActivityService.SpeechRecognition;
@@ -71,10 +74,23 @@ public class MainActivity extends AppCompatActivity {
 
         this.speechRecognition = new SpeechRecognition(this);
 
+        Button gotoPlayer = (Button) findViewById(R.id.goToMediaPlayerButton);
 
+        gotoPlayer.setOnClickListener( new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                changeAcitvity();
+            }
+        });
 
     }
+
+    private void changeAcitvity() {
+        Intent i = new Intent(this, myapplication.MainActivity.class);
+        startActivity(i);
+    }
+
 
     private void askForLocationpermissions() {
         try {

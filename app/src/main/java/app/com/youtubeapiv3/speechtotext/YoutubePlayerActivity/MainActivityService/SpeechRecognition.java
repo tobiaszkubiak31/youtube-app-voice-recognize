@@ -23,7 +23,7 @@ public class SpeechRecognition {
 	private SpeechRecognizer speechRecognizer;
 	private SpeechRecognitionListener speechRecognitionListener;
 	private Intent recognizerIntent;
-	private AudioManager manager;
+//	private AudioManager manager;
 	private MainActivity context;
 	private CommandService commandService;
 
@@ -32,7 +32,7 @@ public class SpeechRecognition {
 
 		speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context);
 		speechRecognitionListener = new SpeechRecognitionListener();
-		manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+//		manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 		speechRecognizer.setRecognitionListener(speechRecognitionListener);
 
 		this.commandService = new CommandService(context);
@@ -65,11 +65,11 @@ public class SpeechRecognition {
 
 		//if setting.SpeechEnable
 //		manager.setStreamMute(AudioManager.STREAM_MUSIC, true);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-			manager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_MUTE, 0);
-		} else {
-			manager.setStreamMute(AudioManager.STREAM_MUSIC, true);
-		}
+//		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+//			manager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_MUTE, 0);
+//		} else {
+//			manager.setStreamMute(AudioManager.STREAM_MUSIC, true);
+//		}
 		speechRecognizer.startListening(recognizerIntent);
 	}
 
